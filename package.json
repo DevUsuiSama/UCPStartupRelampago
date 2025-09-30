@@ -1,0 +1,17 @@
+{
+  "name": "porfolio-professional",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "sass public/sass/styles.sass public/css/styles.css --no-source-map",
+    "watch:css": "sass --watch public/sass/styles.sass public/css/styles.css --no-source-map"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "sass": "^1.93.2"
+  }
+}

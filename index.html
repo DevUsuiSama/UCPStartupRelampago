@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Profesional | Cybersecurity Developer</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+</head>
+
+<body data-theme="dark">
+    <!-- Subtle Matrix Background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <!-- Professional Controls Bar -->
+    <div class="controls-bar">
+        <div class="control-group">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                🌓 <span data-i18n="controls.theme">Tema</span>
+            </button>
+            <select class="lang-selector" id="lang-selector" aria-label="Seleccionar idioma">
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="jp">🇯🇵 日本語</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Professional Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 data-i18n="title">Cybersecurity Developer</h1>
+                <p data-i18n="subtitle">Full Stack Developer | Security Specialist | Digital Innovation</p>
+            </div>
+        </header>
+
+        <!-- Professional Navigation -->
+        <nav class="nav" role="navigation">
+            <div class="nav-container">
+                <a href="#" class="nav-item active" data-section="home" data-i18n="nav.home">Inicio</a>
+                <a href="#" class="nav-item" data-section="about" data-i18n="nav.about">Acerca de</a>
+                <a href="#" class="nav-item" data-section="projects" data-i18n="nav.projects">Proyectos</a>
+                <a href="#" class="nav-item" data-section="skills" data-i18n="nav.skills">Habilidades</a>
+                <a href="#" class="nav-item" data-section="contact" data-i18n="nav.contact">Contacto</a>
+            </div>
+        </nav>
+
+        <!-- Mobile Navigation -->
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Abrir menú de navegación"
+            aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="#" class="mobile-nav-item active" data-section="home" data-i18n="nav.home">Inicio</a>
+            <a href="#" class="mobile-nav-item" data-section="about" data-i18n="nav.about">Acerca de</a>
+            <a href="#" class="mobile-nav-item" data-section="projects" data-i18n="nav.projects">Proyectos</a>
+            <a href="#" class="mobile-nav-item" data-section="skills" data-i18n="nav.skills">Habilidades</a>
+            <a href="#" class="mobile-nav-item" data-section="contact" data-i18n="nav.contact">Contacto</a>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="loading" aria-hidden="true">
+                <div class="spinner"></div>
+                <p data-i18n="loading">Cargando contenido profesional...</p>
+            </div>
+
+            <!-- Home Section -->
+            <section class="section active" id="home" role="main">
+                <div class="card">
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="terminal-title">professional@developer:~$</div>
+                        </div>
+                        <div class="terminal-content" id="terminal-home">
+                            <!-- Content will be animated here -->
+                        </div>
+                    </div>
+                    <a href="#" class="btn" data-section="projects" data-i18n="home.explore">Explorar Proyectos</a>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="section" id="about">
+                <div class="card">
+                    <h2 data-i18n="about.title">Perfil Profesional</h2>
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="terminal-title">experience.log</div>
+                        </div>
+                        <div class="terminal-content" id="terminal-about">
+                            <!-- Content will be animated here -->
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="card">
+                            <h3 data-i18n="about.expertise">Áreas de Especialización</h3>
+                            <div class="skill-list">
+                                <div class="skill-item">
+                                    <strong data-i18n="about.security">Seguridad de Aplicaciones</strong>
+                                </div>
+                                <div class="skill-item">
+                                    <strong data-i18n="about.fullstack">Desarrollo Full Stack</strong>
+                                </div>
+                                <div class="skill-item">
+                                    <strong data-i18n="about.cloud">Arquitectura Cloud</strong>
+                                </div>
+                                <div class="skill-item">
+                                    <strong data-i18n="about.devops">DevSecOps</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3 data-i18n="about.experience">Experiencia</h3>
+                            <div class="skill-list">
+                                <div class="skill-item">
+                                    <strong>5+ años</strong><br>
+                                    <span data-i18n="about.webdev">Desarrollo Web</span>
+                                </div>
+                                <div class="skill-item">
+                                    <strong>3+ años</strong><br>
+                                    <span data-i18n="about.cybersec">Ciberseguridad</span>
+                                </div>
+                                <div class="skill-item">
+                                    <strong>50+ proyectos</strong><br>
+                                    <span data-i18n="about.completed">Completados</span>
+                                </div>
+                                <div class="skill-item">
+                                    <strong>Enterprise</strong><br>
+                                    <span data-i18n="about.solutions">Soluciones</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="section" id="projects">
+                <div class="card">
+                    <h2 data-i18n="projects.title">Proyectos Destacados</h2>
+                    <p data-i18n="projects.description">Una selección de proyectos que demuestran expertise técnico y
+                        enfoque en seguridad.</p>
+                </div>
+                <div class="grid" id="projects-grid">
+                    <!-- Projects loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="section" id="skills">
+                <div class="card">
+                    <h2 data-i18n="skills.title">Competencias Técnicas</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <div class="skill-category">
+                                <h3 data-i18n="skills.frontend">Frontend Development</h3>
+                                <div class="project-tech">
+                                    <span class="tech-tag">React</span>
+                                    <span class="tech-tag">Vue.js</span>
+                                    <span class="tech-tag">TypeScript</span>
+                                    <span class="tech-tag">Next.js</span>
+                                    <span class="tech-tag">Sass/SCSS</span>
+                                    <span class="tech-tag">Tailwind CSS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="skill-category">
+                                <h3 data-i18n="skills.backend">Backend Development</h3>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Node.js</span>
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Express</span>
+                                    <span class="tech-tag">PostgreSQL</span>
+                                    <span class="tech-tag">MongoDB</span>
+                                    <span class="tech-tag">Redis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="skill-category">
+                                <h3 data-i18n="skills.security">Cybersecurity</h3>
+                                <div class="project-tech">
+                                    <span class="tech-tag">OWASP</span>
+                                    <span class="tech-tag">Penetration Testing</span>
+                                    <span class="tech-tag">Vulnerability Assessment</span>
+                                    <span class="tech-tag">Secure Coding</span>
+                                    <span class="tech-tag">SIEM</span>
+                                    <span class="tech-tag">Cryptography</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="skill-category">
+                                <h3 data-i18n="skills.cloud">Cloud & DevOps</h3>
+                                <div class="project-tech">
+                                    <span class="tech-tag">AWS</span>
+                                    <span class="tech-tag">Docker</span>
+                                    <span class="tech-tag">Kubernetes</span>
+                                    <span class="tech-tag">CI/CD</span>
+                                    <span class="tech-tag">Terraform</span>
+                                    <span class="tech-tag">Jenkins</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="section" id="contact">
+                <div class="card">
+                    <h2 data-i18n="contact.title">Contacto Profesional</h2>
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="terminal-title">contact.info</div>
+                        </div>
+                        <div class="terminal-content" id="terminal-contact">
+                            <!-- Content will be animated here -->
+                        </div>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <h4>Email</h4>
+                            <p>contact@cybersec-dev.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">💼</div>
+                            <h4>LinkedIn</h4>
+                            <p>/in/cybersecurity-developer</p>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🐙</div>
+                            <h4>GitHub</h4>
+                            <p>/cybersec-developer</p>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🌐</div>
+                            <h4 data-i18n="contact.website">Sitio Web</h4>
+                            <p>www.cybersec-dev.com</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Professional Footer -->
+        <footer class="footer">
+            <p data-i18n="footer.copyright">&copy; 2025 Cybersecurity Developer Portfolio. Todos los derechos
+                reservados.</p>
+            <p data-i18n="footer.disclaimer">Enfocado en soluciones seguras y desarrollo profesional</p>
+        </footer>
+    </div>
+
+    <!-- Servicios base -->
+    <script src="public/js/professional-I18n-service.js" defer></script>
+    <script src="public/js/professional-loading-service.js" defer></script>
+    <script src="public/js/professional-matrix-service.js" defer></script>
+    <script src="public/js/professional-navigation-service.js" defer></script>
+    <script src="public/js/professional-observer.js" defer></script>
+    <script src="public/js/professional-theme-service.js" defer></script>
+    <script src="public/js/terminal-animation-service.js" defer></script>
+
+    <!-- Lógica de proyectos -->
+    <script src="public/js/professional-project-factory.js" defer></script>
+    <script src="public/js/professional-project-service.js" defer></script>
+
+    <!-- Componentes -->
+    <script src="public/js/professional-projects-component.js" defer></script>
+
+    <!-- App principal -->
+    <script src="public/js/professional-portfolio-app.js" defer></script>
+
+</body>
+
+</html>
