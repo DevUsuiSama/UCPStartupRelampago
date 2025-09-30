@@ -653,6 +653,20 @@ body {
   font-size: 3.5rem;
   position: relative;
   overflow: hidden;
+  transition: all 0.5s ease;
+}
+.project-image[data-loaded=false] {
+  opacity: 0.7;
+  filter: blur(1px);
+  transform: scale(0.98);
+}
+.project-image[data-loaded=true] {
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1);
+}
+.project-image.image-loaded {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 .project-image::after {
   content: "";
@@ -762,6 +776,47 @@ body {
   padding: 4rem;
 }
 
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+}
+.loading-state .spinner {
+  margin: 0 auto 2rem;
+}
+.loading-state .progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+.loading-state .progress-bar .progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  width: 0%;
+  transition: width 0.3s ease;
+  animation: loadingProgress 2s ease-in-out infinite;
+}
+.loading-state .loading-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+@keyframes loadingProgress {
+  0% {
+    width: 0%;
+    transform: translateX(-100%);
+  }
+  50% {
+    width: 60%;
+  }
+  100% {
+    width: 100%;
+    transform: translateX(100%);
+  }
+}
 .spinner {
   border: 3px solid var(--glass-background);
   border-top: 3px solid var(--primary-color);
@@ -771,6 +826,16 @@ body {
   animation: spin 1s linear infinite;
   margin: 0 auto 2rem;
   box-shadow: var(--glow-soft);
+}
+
+.error-state {
+  text-align: center;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+}
+.error-state h3 {
+  color: white;
+  margin-bottom: 1rem;
 }
 
 .footer {
@@ -854,6 +919,16 @@ body {
   border: 0;
 }
 
+.nav-item:focus,
+.btn:focus,
+.theme-toggle:focus,
+.lang-selector:focus,
+.mobile-nav-toggle:focus,
+.mobile-nav-item:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
 @media (prefers-contrast: high) {
   :root {
     --border-color: var(--primary-color);
@@ -868,4 +943,77 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+body.keyboard-navigation *:focus {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px;
+}
+
+body:not(.keyboard-navigation) *:focus {
+  outline: none;
+}
+
+.project-image {
+  transition: all 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.project-image[data-loaded=false]:not([data-src=""]) {
+  background-image: linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%), linear-gradient(-45deg, var(--secondary-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--secondary-color) 75%), linear-gradient(-45deg, transparent 75%, var(--secondary-color) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+@keyframes imageFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.image-fade-in {
+  animation: imageFadeIn 0.6s ease-out;
+}
+
+.debug-console {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  max-width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10000;
+  display: none;
+}
+.debug-console.visible {
+  display: block;
+}
+.debug-console .debug-entry {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.debug-console .debug-entry.info {
+  color: var(--primary-color);
+}
+.debug-console .debug-entry.warn {
+  color: #ffbd2e;
+}
+.debug-console .debug-entry.error {
+  color: #ff5f56;
+}
+
+.performance-optimized {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }

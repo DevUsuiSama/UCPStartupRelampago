@@ -1,6 +1,21 @@
+/**
+ * Main Professional Portfolio Application
+ */
 class ProfessionalPortfolioApp {
     constructor() {
-        // Initialize services with dependency injection
+        console.log('🔧 Inicializando ProfessionalPortfolioApp...');
+
+        try {
+            this.initializeServices();
+            this.setupObservers();
+            this.init();
+        } catch (error) {
+            console.error('❌ Error en constructor de ProfessionalPortfolioApp:', error);
+            throw error;
+        }
+    }
+
+    initializeServices() {
         this.i18nService = new ProfessionalI18nService();
         this.themeService = new ProfessionalThemeService();
         this.navigationService = new ProfessionalNavigationService();
@@ -12,30 +27,39 @@ class ProfessionalPortfolioApp {
             ProfessionalProjectFactory
         );
 
-        // Setup observers
+        this.imageLoader = new ConcurrentImageLoader();
+        this.projectLoader = new ConcurrentProjectLoader();
+        this.performanceMonitor = new PerformanceMonitor();
+    }
+
+    setupObservers() {
         this.professionalObserver = new ProfessionalObserver(this.terminalService);
+
         this.navigationService.addObserver(this.professionalObserver);
         this.themeService.addObserver(this.professionalObserver);
         this.themeService.addObserver(this.matrixService);
 
-        this.init();
+        this.navigationService.addObserver({
+            update: (section) => {
+                if (section === 'projects') {
+                    this.loadProjectsWithConcurrency();
+                }
+            }
+        });
     }
 
     init() {
-        this.setupEventListeners();
-        this.initializeServices();
-        this.startInitialAnimations();
-    }
+        console.log('🚀 Iniciando aplicación portfolio...');
 
-    initializeServices() {
-        this.themeService.initTheme();
-        this.i18nService.updateUI();
-        this.matrixService.init();
-        this.navigationService.initMobileNav();
+        this.setupEventListeners();
+        this.initializeServicesRuntime();
+        this.startInitialAnimations();
+        this.initializeConcurrentLoaders();
     }
 
     setupEventListeners() {
-        // Navigation handling
+        console.log('🔧 Configurando event listeners...');
+
         document.addEventListener('click', (e) => {
             if (e.target.matches('.nav-item') || e.target.matches('[data-section]')) {
                 e.preventDefault();
@@ -46,7 +70,6 @@ class ProfessionalPortfolioApp {
             }
         });
 
-        // Theme toggle
         const themeToggle = document.getElementById('theme-toggle');
         if (themeToggle) {
             themeToggle.addEventListener('click', () => {
@@ -54,30 +77,27 @@ class ProfessionalPortfolioApp {
             });
         }
 
-        // Language selector
         const langSelector = document.getElementById('lang-selector');
         if (langSelector) {
             langSelector.addEventListener('change', (e) => {
-                this.i18nService.setLanguage(e.target.value);
-                // Update terminal animations with new language
-                setTimeout(() => {
-                    this.terminalService.updateTerminals();
-                }, 100);
+                const newLang = e.target.value;
+
+                // Cambiar idioma solo si es distinto al actual
+                if (this.i18nService.getCurrentLanguage() !== newLang) {
+                    this.i18nService.setLanguage(newLang);
+
+                    setTimeout(() => {
+                        // Limpiar terminales antes de actualizar para evitar duplicados
+                        document.querySelectorAll('.terminal-line').forEach(el => el.remove());
+
+                        this.terminalService.updateTerminals();
+                    }, 100);
+                }
             });
         }
 
-        // Lazy loading for projects
-        this.navigationService.addObserver({
-            update: (section) => {
-                if (section === 'projects') {
-                    this.projectsComponent.render();
-                }
-            }
-        });
 
-        // Professional keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            // Only if Ctrl/Cmd is pressed and no input is focused
             if ((e.ctrlKey || e.metaKey) && !e.target.matches('input, textarea, select')) {
                 e.preventDefault();
                 switch (e.key) {
@@ -90,7 +110,6 @@ class ProfessionalPortfolioApp {
             }
         });
 
-        // Accessibility: Focus management
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 document.body.classList.add('keyboard-navigation');
@@ -101,31 +120,38 @@ class ProfessionalPortfolioApp {
             document.body.classList.remove('keyboard-navigation');
         });
 
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', (e) => {
-            const mobileNav = document.getElementById('mobile-nav');
-            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        this.setupConcurrentEventListeners();
+    }
 
-            if (this.navigationService.isMobileNavOpen &&
-                !mobileNav.contains(e.target) &&
-                !mobileNavToggle.contains(e.target)) {
-                this.navigationService.toggleMobileNav();
+    setupConcurrentEventListeners() {
+        document.addEventListener('projectLoadProgress', (event) => {
+            this.updateProgressUI(event.detail);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('retry-concurrent-load')) {
+                e.preventDefault();
+                this.loadProjectsWithConcurrency();
             }
         });
     }
 
+    initializeServicesRuntime() {
+        this.themeService.initTheme();
+        this.i18nService.updateUI();
+        this.matrixService.init();
+        this.navigationService.init();
+    }
+
     startInitialAnimations() {
-        // Start terminal animation on home page
         setTimeout(() => {
             this.terminalService.animateTerminal('terminal-home', 'home.terminal');
         }, 1000);
 
-        // Add entrance animations to main elements
         this.addEntranceAnimations();
     }
 
     addEntranceAnimations() {
-        // Animate navigation items
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach((item, index) => {
             item.style.opacity = '0';
@@ -137,7 +163,6 @@ class ProfessionalPortfolioApp {
             }, 200 + index * 100);
         });
 
-        // Animate cards
         const cards = document.querySelectorAll('.card');
         cards.forEach((card, index) => {
             card.style.opacity = '0';
@@ -150,20 +175,127 @@ class ProfessionalPortfolioApp {
         });
     }
 
-    // Method to handle responsive behavior
+    initializeConcurrentLoaders() {
+        this.performanceMonitor.startMonitoring();
+        console.log('🚀 Carga concurrente inicializada');
+    }
+
+    async loadProjectsWithConcurrency() {
+        console.log('🔧 Iniciando carga concurrente de proyectos...');
+
+        try {
+            this.showLoadingState();
+
+            const projects = await this.projectLoader.loadProjects(
+                await this.projectService.getAllProjects(),
+                'high'
+            );
+
+            await this.projectsComponent.renderWithConcurrency(projects);
+            await this.initializeImageLoading();
+
+            this.hideLoadingState();
+            this.performanceMonitor.recordProjectLoad();
+
+            console.log('✅ Carga concurrente completada exitosamente');
+
+        } catch (error) {
+            console.error('❌ Error en carga concurrente:', error);
+            this.handleLoadError(error);
+        }
+    }
+
+    async initializeImageLoading() {
+        const projectImages = document.querySelectorAll('.project-image');
+        const imageUrls = this.generateTestImageUrls(projectImages.length);
+
+        projectImages.forEach((imageElement, index) => {
+            const imageUrl = imageUrls[index % imageUrls.length];
+            this.imageLoader.registerImage(imageElement, imageUrl);
+        });
+
+        setTimeout(() => {
+            this.imageLoader.loadAllImagesImmediately();
+        }, 100);
+    }
+
+    generateTestImageUrls(count) {
+        const baseUrls = [
+            'https://source.unsplash.com/random/400x300?sig=1',
+            'https://source.unsplash.com/random/400x300?sig=2',
+            'https://source.unsplash.com/random/400x300?sig=3',
+            'https://source.unsplash.com/random/400x300?sig=4',
+            'https://source.unsplash.com/random/400x300?sig=5',
+            'https://source.unsplash.com/random/400x300?sig=6',
+            'https://source.unsplash.com/random/400x300?sig=7',
+            'https://source.unsplash.com/random/400x300?sig=8',
+            'https://source.unsplash.com/random/400x300?sig=9',
+            'https://source.unsplash.com/random/400x300?sig=10'
+        ];
+
+
+        return [...baseUrls].sort(() => Math.random() - 0.5)
+            .slice(0, Math.max(count, baseUrls.length));
+    }
+
+    showLoadingState() {
+        const projectsGrid = document.getElementById('projects-grid');
+        if (projectsGrid) {
+            projectsGrid.innerHTML = `
+                <div class="card loading-state">
+                    <div class="spinner"></div>
+                    <p>Cargando proyectos de manera optimizada...</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p class="loading-text">Preparando contenido...</p>
+                </div>
+            `;
+        }
+    }
+
+    hideLoadingState() {
+        const loadingState = document.querySelector('.loading-state');
+        if (loadingState) {
+            loadingState.remove();
+        }
+    }
+
+    updateProgressUI(progress) {
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = `Cargando... ${progress.current}/${progress.total} lotes`;
+        }
+
+        const progressBar = document.querySelector('.progress-bar .progress');
+        if (progressBar) {
+            progressBar.style.width = `${progress.progress}%`;
+        }
+    }
+
+    handleLoadError(error) {
+        console.error('Error de carga:', error);
+        const projectsGrid = document.getElementById('projects-grid');
+        if (projectsGrid) {
+            projectsGrid.innerHTML = `
+                <div class="card error-state">
+                    <h3>⚠️ Error de Carga Concurrente</h3>
+                    <p>No se pudieron cargar los proyectos. ${error.message}</p>
+                    <button class="btn retry-btn retry-concurrent-load">Reintentar Carga Optimizada</button>
+                </div>
+            `;
+        }
+    }
+
     handleResize() {
-        // Responsive adjustments could go here
         if (window.innerWidth < 768) {
-            // Mobile optimizations
             this.optimizeForMobile();
         } else {
-            // Desktop optimizations
             this.optimizeForDesktop();
         }
     }
 
     optimizeForMobile() {
-        // Mobile-specific optimizations
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.style.padding = '1.5rem';
@@ -171,7 +303,6 @@ class ProfessionalPortfolioApp {
     }
 
     optimizeForDesktop() {
-        // Desktop-specific optimizations
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.style.padding = '3rem';
@@ -179,60 +310,18 @@ class ProfessionalPortfolioApp {
     }
 }
 
-// Initialize the professional application
-document.addEventListener('DOMContentLoaded', () => {
-    // Professional initialization
-    const app = new ProfessionalPortfolioApp();
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        app.handleResize();
-    });
-
-    // Handle page visibility for performance
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            // Pause animations when page is not visible
-            app.matrixService.isRunning = false;
-        } else {
-            // Resume animations when page becomes visible
-            app.matrixService.isRunning = true;
-            app.matrixService.startAnimation();
-        }
-    });
-
-    // Professional console greeting
+// Inicialización global
+document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
-        console.log(`
-╔══════════════════════════════════════════════════════════════╗
-║                    PROFESSIONAL PORTFOLIO                    ║
-║                                                              ║
-║  Welcome to a secure, professional development portfolio    ║
-║                                                              ║
-║  🔒 Security-first approach                                  ║
-║  💼 Enterprise-ready solutions                               ║
-║  🚀 Modern development practices                             ║
-║                                                              ║
-║  Navigation shortcuts:                                       ║
-║  Ctrl+1: Home      Ctrl+2: About     Ctrl+3: Projects       ║
-║  Ctrl+4: Skills    Ctrl+5: Contact                          ║
-║                                                              ║
-║  Built with SOLID principles and professional standards     ║
-╚══════════════════════════════════════════════════════════════╝
-                `);
-    }, 2000);
+        try {
+            if (typeof ProfessionalPortfolioApp !== 'undefined') {
+                window.portfolioApp = new ProfessionalPortfolioApp();
+                console.log('✅ Portfolio Profesional inicializado correctamente');
+            } else {
+                console.error('❌ ProfessionalPortfolioApp no está definido');
+            }
+        } catch (error) {
+            console.error('❌ Error crítico al inicializar la aplicación:', error);
+        }
+    }, 100);
 });
-
-// Add CSS for keyboard navigation focus states
-const style = document.createElement('style');
-style.textContent = `
-            body.keyboard-navigation *:focus {
-                outline: 2px solid var(--primary-color) !important;
-                outline-offset: 2px;
-            }
-            
-            body:not(.keyboard-navigation) *:focus {
-                outline: none;
-            }
-        `;
-document.head.appendChild(style);

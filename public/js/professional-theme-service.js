@@ -1,3 +1,6 @@
+/**
+ * Professional Theme Service
+ */
 class ProfessionalThemeService {
     constructor() {
         this.currentTheme = 'dark';
@@ -5,11 +8,17 @@ class ProfessionalThemeService {
     }
 
     addObserver(observer) {
-        this.observers.push(observer);
+        if (typeof observer === 'object' && observer !== null) {
+            this.observers.push(observer);
+        }
     }
 
     notifyObservers(theme) {
-        this.observers.forEach(observer => observer.onThemeChange && observer.onThemeChange(theme));
+        this.observers.forEach(observer => {
+            if (observer && typeof observer.onThemeChange === 'function') {
+                observer.onThemeChange(theme);
+            }
+        });
     }
 
     toggleTheme() {
@@ -17,7 +26,6 @@ class ProfessionalThemeService {
         document.body.setAttribute('data-theme', this.currentTheme);
         this.notifyObservers(this.currentTheme);
 
-        // Store preference
         try {
             localStorage.setItem('preferred-theme', this.currentTheme);
         } catch (e) {

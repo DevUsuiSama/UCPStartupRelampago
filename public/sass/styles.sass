@@ -1,9 +1,11 @@
 // =============================================================================
+// IMPORTAR MÓDULOS SASS
+// =============================================================================
+@use "sass:map"
+
+// =============================================================================
 // VARIABLES Y CONFIGURACIÓN
 // =============================================================================
-
-// Importar módulos necesarios
-@use "sass:map"
 
 // Colores base para el tema oscuro
 $dark-colors: (primary: #00d4ff, primary-glow: rgba(0, 212, 255, 0.3), secondary: #1a202c, accent: #4fd1c7, text: #e2e8f0, text-secondary: #a0aec0, background: #0f1419, background-secondary: #1a202c, background-card: rgba(26, 32, 44, 0.95), white: #ffffff, border: rgba(0, 212, 255, 0.3), glass-background: rgba(26, 32, 44, 0.8))
@@ -18,766 +20,828 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
 // Breakpoints responsivos
 $breakpoints: (mobile: 480px, tablet: 768px, desktop: 1024px, large: 1200px)
 
-// Mixins para breakpoints
+// Mixins para breakpoints - CORREGIDO
 @mixin respond-to($breakpoint)
-  @if map.has-key($breakpoints, $breakpoint)
-    @media (max-width: map.get($breakpoints, $breakpoint))
-      @content
-  @else
-    @warn "Breakpoint '#{$breakpoint}' no está definido"
+    @if map.has-key($breakpoints, $breakpoint)
+        @media (max-width: map.get($breakpoints, $breakpoint))
+            @content
+    @else
+        @warn "Breakpoint '#{$breakpoint}' no está definido"
 
-// Mixin para temas
+// Mixin para temas - CORREGIDO
 @mixin theme($theme-colors)
-  --primary-color: #{map.get($theme-colors, primary)}
-  --primary-glow: #{map.get($theme-colors, primary-glow)}
-  --secondary-color: #{map.get($theme-colors, secondary)}
-  --accent-color: #{map.get($theme-colors, accent)}
-  --text-color: #{map.get($theme-colors, text)}
-  --text-secondary: #{map.get($theme-colors, text-secondary)}
-  --background-color: #{map.get($theme-colors, background)}
-  --background-secondary: #{map.get($theme-colors, background-secondary)}
-  --background-card: #{map.get($theme-colors, background-card)}
-  --white: #{map.get($dark-colors, white)}
-  --border-color: #{map.get($theme-colors, border)}
-  --glass-background: #{map.get($theme-colors, glass-background)}
-  
-  // Sombras y efectos
-  --shadow: 0 4px 20px #{map.get($theme-colors, primary-glow)}
-  --shadow-hover: 0 8px 30px #{map.get($theme-colors, primary-glow)}
-  --glow-soft: 0 0 20px #{map.get($theme-colors, primary-glow)}
+    --primary-color: #{map.get($theme-colors, primary)}
+    --primary-glow: #{map.get($theme-colors, primary-glow)}
+    --secondary-color: #{map.get($theme-colors, secondary)}
+    --accent-color: #{map.get($theme-colors, accent)}
+    --text-color: #{map.get($theme-colors, text)}
+    --text-secondary: #{map.get($theme-colors, text-secondary)}
+    --background-color: #{map.get($theme-colors, background)}
+    --background-secondary: #{map.get($theme-colors, background-secondary)}
+    --background-card: #{map.get($theme-colors, background-card)}
+    --white: #{map.get($dark-colors, white)}
+    --border-color: #{map.get($theme-colors, border)}
+    --glass-background: #{map.get($theme-colors, glass-background)}
+    
+    // Sombras y efectos
+    --shadow: 0 4px 20px #{map.get($theme-colors, primary-glow)}
+    --shadow-hover: 0 8px 30px #{map.get($theme-colors, primary-glow)}
+    --glow-soft: 0 0 20px #{map.get($theme-colors, primary-glow)}
 
 // =============================================================================
 // ANIMACIONES
 // =============================================================================
 
 @keyframes fadeInUp
-  from
-    opacity: 0
-    transform: translateY(40px)
-  to
-    opacity: 1
-    transform: translateY(0)
+    from
+        opacity: 0
+        transform: translateY(40px)
+    to
+        opacity: 1
+        transform: translateY(0)
 
 @keyframes slideInRight
-  from
-    opacity: 0
-    transform: translateX(30px)
-  to
-    opacity: 1
-    transform: translateX(0)
+    from
+        opacity: 0
+        transform: translateX(30px)
+    to
+        opacity: 1
+        transform: translateX(0)
 
 @keyframes typewriter
-  from
-    width: 0
-  to
-    width: 100%
+    from
+        width: 0
+    to
+        width: 100%
 
 @keyframes blink-cursor
-  0%, 50%
-    border-right-color: var(--primary-color)
-  51%, 100%
-    border-right-color: transparent
+    0%, 50%
+        border-right-color: var(--primary-color)
+    51%, 100%
+        border-right-color: transparent
 
 @keyframes pulse-glow
-  0%, 100%
-    box-shadow: var(--glow-soft)
-  50%
-    box-shadow: var(--shadow-hover)
+    0%, 100%
+        box-shadow: var(--glow-soft)
+    50%
+        box-shadow: var(--shadow-hover)
 
 @keyframes floating
-  0%, 100%
-    transform: translateY(0px)
-  50%
-    transform: translateY(-10px)
+    0%, 100%
+        transform: translateY(0px)
+    50%
+        transform: translateY(-10px)
 
 @keyframes matrix-fade
-  0%
-    opacity: 0
-    transform: translateY(-50px)
-  10%
-    opacity: 1
-  90%
-    opacity: 1
-  100%
-    opacity: 0
-    transform: translateY(100vh)
+    0%
+        opacity: 0
+        transform: translateY(-50px)
+    10%
+        opacity: 1
+    90%
+        opacity: 1
+    100%
+        opacity: 0
+        transform: translateY(100vh)
 
 @keyframes slideDown
-  from
-    opacity: 0
-    transform: translateY(-20px)
-  to
-    opacity: 1
-    transform: translateY(0)
+    from
+        opacity: 0
+        transform: translateY(-20px)
+    to
+        opacity: 1
+        transform: translateY(0)
 
 @keyframes burgerTop
-  0%
-    transform: translateY(0) rotate(0)
-  50%
-    transform: translateY(8px) rotate(0)
-  100%
-    transform: translateY(8px) rotate(45deg)
+    0%
+        transform: translateY(0) rotate(0)
+    50%
+        transform: translateY(8px) rotate(0)
+    100%
+        transform: translateY(8px) rotate(45deg)
 
 @keyframes burgerMiddle
-  0%
-    opacity: 1
-  50%
-    opacity: 0
-  100%
-    opacity: 0
+    0%
+        opacity: 1
+    50%
+        opacity: 0
+    100%
+        opacity: 0
 
 @keyframes burgerBottom
-  0%
-    transform: translateY(0) rotate(0)
-  50%
-    transform: translateY(-8px) rotate(0)
-  100%
-    transform: translateY(-8px) rotate(-45deg)
+    0%
+        transform: translateY(0) rotate(0)
+    50%
+        transform: translateY(-8px) rotate(0)
+    100%
+        transform: translateY(-8px) rotate(-45deg)
 
 @keyframes spin
-  0%
-    transform: rotate(0deg)
-  100%
-    transform: rotate(360deg)
+    0%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
 
 // =============================================================================
-// ESTILOS BASE Y RESET
+// RESET Y ESTILOS BASE
 // =============================================================================
 
 *
-  margin: 0
-  padding: 0
-  box-sizing: border-box
+    margin: 0
+    padding: 0
+    box-sizing: border-box
 
 body
-  font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
-  line-height: 1.7
-  color: var(--text-color)
-  background: linear-gradient(135deg, var(--background-color) 0%, var(--secondary-color) 100%)
-  min-height: 100vh
-  overflow-x: hidden
-  transition: $transition
+    font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
+    line-height: 1.7
+    color: var(--text-color)
+    background: linear-gradient(135deg, var(--background-color) 0%, var(--secondary-color) 100%)
+    min-height: 100vh
+    overflow-x: hidden
+    transition: $transition
 
 // =============================================================================
 // VARIABLES CSS Y TEMAS
 // =============================================================================
 
 :root
-  @include theme($dark-colors)
-  --border-radius: #{$border-radius}
-  --transition: #{$transition}
+    @include theme($dark-colors)
+    --border-radius: #{$border-radius}
+    --transition: #{$transition}
 
 [data-theme="light"]
-  @include theme($light-colors)
+    @include theme($light-colors)
 
 // =============================================================================
-// COMPONENTES
+// COMPONENTES PRINCIPALES
 // =============================================================================
 
 // Background Matrix
 .matrix-bg
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  pointer-events: none
-  z-index: -1
-  opacity: 0.03
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    pointer-events: none
+    z-index: -1
+    opacity: 0.03
 
 .matrix-char
-  position: absolute
-  font-family: 'Courier New', monospace
-  font-size: 14px
-  color: var(--primary-color)
-  animation: matrix-fade 12s linear infinite
-  font-weight: 300
+    position: absolute
+    font-family: 'Courier New', monospace
+    font-size: 14px
+    color: var(--primary-color)
+    animation: matrix-fade 12s linear infinite
+    font-weight: 300
 
 // Layout Principal
 .container
-  display: flex
-  flex-direction: column
-  min-height: 100vh
-  position: relative
+    display: flex
+    flex-direction: column
+    min-height: 100vh
+    position: relative
 
 // Controls Bar
 .controls-bar
-  position: fixed
-  top: 30px
-  right: 30px
-  display: flex
-  gap: 20px
-  z-index: 1000
-  background: var(--glass-background)
-  backdrop-filter: blur(15px)
-  padding: 20px 25px
-  border-radius: 15px
-  border: 1px solid var(--border-color)
-  box-shadow: var(--shadow)
-  animation: slideInRight 0.6s ease
+    position: fixed
+    top: 30px
+    right: 30px
+    display: flex
+    gap: 20px
+    z-index: 1000
+    background: var(--glass-background)
+    backdrop-filter: blur(15px)
+    padding: 20px 25px
+    border-radius: 15px
+    border: 1px solid var(--border-color)
+    box-shadow: var(--shadow)
+    animation: slideInRight 0.6s ease
 
-  @include respond-to(tablet)
-    position: relative
-    top: 0
-    right: 0
-    margin: 1rem
-    justify-content: center
+    @include respond-to(tablet)
+        position: relative
+        top: 0
+        right: 0
+        margin: 1rem
+        justify-content: center
 
-  @include respond-to(mobile)
-    padding: 15px
-    flex-direction: column
-    gap: 10px
+    @include respond-to(mobile)
+        padding: 15px
+        flex-direction: column
+        gap: 10px
 
 .control-group
-  display: flex
-  align-items: center
-  gap: 15px
+    display: flex
+    align-items: center
+    gap: 15px
 
-  @include respond-to(mobile)
-    justify-content: center
+    @include respond-to(mobile)
+        justify-content: center
 
 %control-button
-  background: transparent
-  border: 1px solid var(--border-color)
-  color: var(--text-color)
-  padding: 10px 16px
-  border-radius: 8px
-  cursor: pointer
-  transition: $transition
-  font-family: inherit
-  font-size: 13px
-  font-weight: 500
+    background: transparent
+    border: 1px solid var(--border-color)
+    color: var(--text-color)
+    padding: 10px 16px
+    border-radius: 8px
+    cursor: pointer
+    transition: $transition
+    font-family: inherit
+    font-size: 13px
+    font-weight: 500
 
-  &:hover
-    background: var(--primary-color)
-    color: var(--background-color)
-    box-shadow: var(--glow-soft)
-    transform: translateY(-2px)
+    &:hover
+        background: var(--primary-color)
+        color: var(--background-color)
+        box-shadow: var(--glow-soft)
+        transform: translateY(-2px)
 
-  &:focus
-    outline: 2px solid var(--primary-color)
-    outline-offset: 2px
+    &:focus
+        outline: 2px solid var(--primary-color)
+        outline-offset: 2px
 
 .theme-toggle,
 .lang-selector
-  @extend %control-button
+    @extend %control-button
 
 // Header
 .header
-  background: linear-gradient(135deg, var(--background-secondary) 0%, var(--primary-color) 100%)
-  color: var(--white)
-  padding: 5rem 0
-  text-align: center
-  position: relative
-  overflow: hidden
+    background: linear-gradient(135deg, var(--background-secondary) 0%, var(--primary-color) 100%)
+    color: var(--white)
+    padding: 5rem 0
+    text-align: center
+    position: relative
+    overflow: hidden
 
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%)
-    backdrop-filter: blur(1px)
+    &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%)
+        backdrop-filter: blur(1px)
 
-  h1
-    font-size: 3.5rem
-    margin-bottom: 1rem
-    font-weight: 700
-    background: linear-gradient(135deg, var(--white) 0%, var(--primary-color) 100%)
-    -webkit-background-clip: text
-    -webkit-text-fill-color: transparent
-    background-clip: text
+    h1
+        font-size: 3.5rem
+        margin-bottom: 1rem
+        font-weight: 700
+        background: linear-gradient(135deg, var(--white) 0%, var(--primary-color) 100%)
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+        background-clip: text
 
-    @include respond-to(tablet)
-      font-size: 2.5rem
+        @include respond-to(tablet)
+            font-size: 2.5rem
 
-    @include respond-to(mobile)
-      font-size: 2rem
+        @include respond-to(mobile)
+            font-size: 2rem
 
-  p
-    font-size: 1.3rem
-    opacity: 0.9
-    font-weight: 400
-    letter-spacing: 0.5px
+    p
+        font-size: 1.3rem
+        opacity: 0.9
+        font-weight: 400
+        letter-spacing: 0.5px
 
-    @include respond-to(mobile)
-      font-size: 1.1rem
+        @include respond-to(mobile)
+            font-size: 1.1rem
 
 .header-content
-  position: relative
-  z-index: 1
-  max-width: 800px
-  margin: 0 auto
-  padding: 0 2rem
+    position: relative
+    z-index: 1
+    max-width: 800px
+    margin: 0 auto
+    padding: 0 2rem
 
 // Navigation
 .nav
-  background: var(--glass-background)
-  backdrop-filter: blur(20px)
-  border-bottom: 1px solid var(--border-color)
-  padding: 1.5rem 0
-  position: sticky
-  top: 0
-  z-index: 100
-  box-shadow: var(--shadow)
+    background: var(--glass-background)
+    backdrop-filter: blur(20px)
+    border-bottom: 1px solid var(--border-color)
+    padding: 1.5rem 0
+    position: sticky
+    top: 0
+    z-index: 100
+    box-shadow: var(--shadow)
 
-  @include respond-to(tablet)
-    display: none
+    @include respond-to(tablet)
+        display: none
 
 .nav-container
-  max-width: 1200px
-  margin: 0 auto
-  display: flex
-  justify-content: center
-  align-items: center
-  gap: 3rem
-  flex-wrap: wrap
-  padding: 0 2rem
+    max-width: 1200px
+    margin: 0 auto
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 3rem
+    flex-wrap: wrap
+    padding: 0 2rem
 
-  @include respond-to(desktop)
-    gap: 2rem
+    @include respond-to(desktop)
+        gap: 2rem
 
-  @include respond-to(tablet)
-    justify-content: space-between
-    padding: 0 1rem
+    @include respond-to(tablet)
+        justify-content: space-between
+        padding: 0 1rem
 
 %nav-item
-  color: var(--text-color)
-  text-decoration: none
-  padding: 12px 24px
-  border-radius: var(--border-radius)
-  transition: $transition
-  cursor: pointer
-  position: relative
-  font-weight: 500
-  letter-spacing: 0.5px
-  border: 1px solid transparent
+    color: var(--text-color)
+    text-decoration: none
+    padding: 12px 24px
+    border-radius: var(--border-radius)
+    transition: $transition
+    cursor: pointer
+    position: relative
+    font-weight: 500
+    letter-spacing: 0.5px
+    border: 1px solid transparent
 
-  &:hover,
-  &.active
-    color: var(--background-color)
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
-    border-color: var(--primary-color)
-    box-shadow: var(--glow-soft)
-    transform: translateY(-3px)
+    &:hover,
+    &.active
+        color: var(--background-color)
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
+        border-color: var(--primary-color)
+        box-shadow: var(--glow-soft)
+        transform: translateY(-3px)
 
-  &:focus
-    outline: 2px solid var(--primary-color)
-    outline-offset: 2px
+    &:focus
+        outline: 2px solid var(--primary-color)
+        outline-offset: 2px
 
 .nav-item
-  @extend %nav-item
+    @extend %nav-item
 
 // Mobile Navigation
 .mobile-nav-toggle
-  display: none
-  flex-direction: column
-  justify-content: space-between
-  width: 30px
-  height: 21px
-  background: transparent
-  border: none
-  cursor: pointer
-  padding: 0
-  z-index: 1000
+    display: none
+    flex-direction: column
+    justify-content: space-between
+    width: 30px
+    height: 21px
+    background: transparent
+    border: none
+    cursor: pointer
+    padding: 0
+    z-index: 1000
 
-  @include respond-to(tablet)
-    display: flex
+    @include respond-to(tablet)
+        display: flex
 
-  span
-    display: block
-    height: 3px
-    width: 100%
-    background-color: var(--text-color)
-    border-radius: 3px
-    transition: $transition
-    transform-origin: center
+    span
+        display: block
+        height: 3px
+        width: 100%
+        background-color: var(--text-color)
+        border-radius: 3px
+        transition: $transition
+        transform-origin: center
 
-  &.active
-    span:nth-child(1)
-      animation: burgerTop 0.5s forwards
-    span:nth-child(2)
-      animation: burgerMiddle 0.5s forwards
-    span:nth-child(3)
-      animation: burgerBottom 0.5s forwards
+    &.active
+        span:nth-child(1)
+            animation: burgerTop 0.5s forwards
+        span:nth-child(2)
+            animation: burgerMiddle 0.5s forwards
+        span:nth-child(3)
+            animation: burgerBottom 0.5s forwards
 
-  &:focus
-    outline: 2px solid var(--primary-color)
-    outline-offset: 2px
+    &:focus
+        outline: 2px solid var(--primary-color)
+        outline-offset: 2px
 
 .mobile-nav
-  display: none
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100vh
-  background: var(--glass-background)
-  backdrop-filter: blur(20px)
-  z-index: 999
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  opacity: 0
-  transform: translateY(-100%)
-  transition: all 0.5s ease
+    display: none
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100vh
+    background: var(--glass-background)
+    backdrop-filter: blur(20px)
+    z-index: 999
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    opacity: 0
+    transform: translateY(-100%)
+    transition: all 0.5s ease
 
-  @include respond-to(tablet)
-    display: flex
+    @include respond-to(tablet)
+        display: flex
 
-  &.active
-    opacity: 1
-    transform: translateY(0)
+    &.active
+        opacity: 1
+        transform: translateY(0)
 
 .mobile-nav-item
-  @extend %nav-item
-  font-size: 1.5rem
-  margin: 1rem 0
-  padding: 1rem 2rem
-  width: 80%
-  text-align: center
+    @extend %nav-item
+    font-size: 1.5rem
+    margin: 1rem 0
+    padding: 1rem 2rem
+    width: 80%
+    text-align: center
 
 // Main Content
 .main
-  flex: 1
-  max-width: 1200px
-  margin: 0 auto
-  padding: 4rem 2rem
-  width: 100%
+    flex: 1
+    max-width: 1200px
+    margin: 0 auto
+    padding: 4rem 2rem
+    width: 100%
 
-  @include respond-to(tablet)
-    padding: 2rem 1rem
+    @include respond-to(tablet)
+        padding: 2rem 1rem
 
 .section
-  display: none
+    display: none
 
-  &.active
-    display: block
-    animation: fadeInUp 0.6s ease
+    &.active
+        display: block
+        animation: fadeInUp 0.6s ease
 
 // Cards
 .card
-  background: var(--background-card)
-  backdrop-filter: blur(15px)
-  border-radius: var(--border-radius)
-  border: 1px solid var(--border-color)
-  box-shadow: var(--shadow)
-  padding: 3rem
-  margin-bottom: 3rem
-  transition: $transition
-  position: relative
-  overflow: hidden
+    background: var(--background-card)
+    backdrop-filter: blur(15px)
+    border-radius: var(--border-radius)
+    border: 1px solid var(--border-color)
+    box-shadow: var(--shadow)
+    padding: 3rem
+    margin-bottom: 3rem
+    transition: $transition
+    position: relative
+    overflow: hidden
 
-  &:hover
-    transform: translateY(-8px)
-    box-shadow: var(--shadow-hover)
-    border-color: var(--primary-color)
+    &:hover
+        transform: translateY(-8px)
+        box-shadow: var(--shadow-hover)
+        border-color: var(--primary-color)
 
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    height: 3px
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color))
-    opacity: 0
-    transition: opacity 0.3s
+    &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        height: 3px
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color))
+        opacity: 0
+        transition: opacity 0.3s
 
-  &:hover::before
-    opacity: 1
+    &:hover::before
+        opacity: 1
 
-  @include respond-to(tablet)
-    padding: 2rem
+    @include respond-to(tablet)
+        padding: 2rem
 
-  @include respond-to(mobile)
-    padding: 1.5rem
+    @include respond-to(mobile)
+        padding: 1.5rem
 
 // Grid
 .grid
-  display: grid
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))
-  gap: 2.5rem
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))
+    gap: 2.5rem
 
-  @include respond-to(desktop)
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+    @include respond-to(desktop)
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
 
-  @include respond-to(tablet)
-    grid-template-columns: 1fr
+    @include respond-to(tablet)
+        grid-template-columns: 1fr
 
 // Terminal
 .terminal
-  background: var(--background-secondary)
-  border: 1px solid var(--border-color)
-  border-radius: var(--border-radius)
-  padding: 2rem
-  margin: 2rem 0
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace
-  box-shadow: var(--shadow)
-  position: relative
+    background: var(--background-secondary)
+    border: 1px solid var(--border-color)
+    border-radius: var(--border-radius)
+    padding: 2rem
+    margin: 2rem 0
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace
+    box-shadow: var(--shadow)
+    position: relative
 
-  @include respond-to(tablet)
-    padding: 1.5rem
+    @include respond-to(tablet)
+        padding: 1.5rem
 
-  @include respond-to(mobile)
-    padding: 1rem
+    @include respond-to(mobile)
+        padding: 1rem
 
 .terminal-header
-  display: flex
-  align-items: center
-  margin-bottom: 1.5rem
-  padding-bottom: 1rem
-  border-bottom: 1px solid var(--border-color)
+    display: flex
+    align-items: center
+    margin-bottom: 1.5rem
+    padding-bottom: 1rem
+    border-bottom: 1px solid var(--border-color)
 
 .terminal-dots
-  display: flex
-  gap: 8px
-  margin-right: 20px
+    display: flex
+    gap: 8px
+    margin-right: 20px
 
 .dot
-  width: 12px
-  height: 12px
-  border-radius: 50%
+    width: 12px
+    height: 12px
+    border-radius: 50%
 
-  &.red
-    background-color: #ff5f56
+    &.red
+        background-color: #ff5f56
 
-  &.yellow
-    background-color: #ffbd2e
+    &.yellow
+        background-color: #ffbd2e
 
-  &.green
-    background-color: #27ca3f
+    &.green
+        background-color: #27ca3f
 
 .terminal-title
-  color: var(--text-secondary)
-  font-size: 0.9rem
-  font-weight: 500
+    color: var(--text-secondary)
+    font-size: 0.9rem
+    font-weight: 500
 
 .terminal-content
-  color: var(--primary-color)
-  line-height: 2
-  font-size: 0.95rem
+    color: var(--primary-color)
+    line-height: 2
+    font-size: 0.95rem
 
 .terminal-line
-  margin-bottom: 8px
-  opacity: 0
-  animation: fadeInUp 0.5s ease forwards
+    margin-bottom: 8px
+    opacity: 0
+    animation: fadeInUp 0.5s ease forwards
 
 .command
-  color: var(--primary-color)
-  font-weight: 600
+    color: var(--primary-color)
+    font-weight: 600
 
 .output
-  color: var(--text-color)
-  margin-left: 25px
-  font-weight: 400
+    color: var(--text-color)
+    margin-left: 25px
+    font-weight: 400
 
 .typing-animation
-  overflow: hidden
-  border-right: 2px solid var(--primary-color)
-  white-space: nowrap
-  animation: typewriter 2s steps(40) 1s forwards, blink-cursor 1s infinite
-  width: 0
+    overflow: hidden
+    border-right: 2px solid var(--primary-color)
+    white-space: nowrap
+    animation: typewriter 2s steps(40) 1s forwards, blink-cursor 1s infinite
+    width: 0
 
 // Project Cards
 .project-card
-  background: var(--background-card)
-  border-radius: var(--border-radius)
-  overflow: hidden
-  border: 1px solid var(--border-color)
-  transition: $transition
-  position: relative
-  backdrop-filter: blur(15px)
+    background: var(--background-card)
+    border-radius: var(--border-radius)
+    overflow: hidden
+    border: 1px solid var(--border-color)
+    transition: $transition
+    position: relative
+    backdrop-filter: blur(15px)
 
-  &:hover
-    transform: translateY(-10px)
-    box-shadow: var(--shadow-hover)
-    border-color: var(--primary-color)
+    &:hover
+        transform: translateY(-10px)
+        box-shadow: var(--shadow-hover)
+        border-color: var(--primary-color)
 
 .project-image
-  width: 100%
-  height: 220px
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color))
-  display: flex
-  align-items: center
-  justify-content: center
-  color: var(--white)
-  font-size: 3.5rem
-  position: relative
-  overflow: hidden
-
-  &::after
-    content: ''
-    position: absolute
-    top: 0
-    left: -100%
     width: 100%
-    height: 100%
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)
-    transition: left 0.6s
+    height: 220px
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color))
+    display: flex
+    align-items: center
+    justify-content: center
+    color: var(--white)
+    font-size: 3.5rem
+    position: relative
+    overflow: hidden
+    transition: all 0.5s ease
 
-  .project-card:hover &::after
-    left: 100%
+    // Estados para carga concurrente
+    &[data-loaded="false"]
+        opacity: 0.7
+        filter: blur(1px)
+        transform: scale(0.98)
+
+    &[data-loaded="true"]
+        opacity: 1
+        filter: blur(0px)
+        transform: scale(1)
+
+    &.image-loaded
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2)
+
+    &::after
+        content: ''
+        position: absolute
+        top: 0
+        left: -100%
+        width: 100%
+        height: 100%
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)
+        transition: left 0.6s
+
+    .project-card:hover &::after
+        left: 100%
 
 .project-content
-  padding: 2.5rem
+    padding: 2.5rem
 
-  @include respond-to(tablet)
-    padding: 2rem
+    @include respond-to(tablet)
+        padding: 2rem
 
-  @include respond-to(mobile)
-    padding: 1.5rem
+    @include respond-to(mobile)
+        padding: 1.5rem
 
 .project-title
-  color: var(--primary-color)
-  margin-bottom: 1rem
-  font-size: 1.4rem
-  font-weight: 600
+    color: var(--primary-color)
+    margin-bottom: 1rem
+    font-size: 1.4rem
+    font-weight: 600
 
 .project-description
-  color: var(--text-secondary)
-  margin-bottom: 1.5rem
-  line-height: 1.6
+    color: var(--text-secondary)
+    margin-bottom: 1.5rem
+    line-height: 1.6
 
 .project-tech
-  display: flex
-  flex-wrap: wrap
-  gap: 10px
-  margin-top: 2rem
+    display: flex
+    flex-wrap: wrap
+    gap: 10px
+    margin-top: 2rem
 
 .tech-tag
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
-  color: var(--background-color)
-  padding: 8px 16px
-  border-radius: 25px
-  font-size: 0.85rem
-  font-weight: 500
-  transition: $transition
-  border: 1px solid var(--border-color)
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
+    color: var(--background-color)
+    padding: 8px 16px
+    border-radius: 25px
+    font-size: 0.85rem
+    font-weight: 500
+    transition: $transition
+    border: 1px solid var(--border-color)
 
-  &:hover
-    transform: translateY(-2px)
-    box-shadow: var(--glow-soft)
+    &:hover
+        transform: translateY(-2px)
+        box-shadow: var(--glow-soft)
 
 // Buttons
 .btn
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
-  color: var(--background-color)
-  border: none
-  padding: 14px 28px
-  border-radius: var(--border-radius)
-  cursor: pointer
-  transition: $transition
-  text-decoration: none
-  display: inline-block
-  margin-top: 2rem
-  font-weight: 600
-  letter-spacing: 0.5px
-  position: relative
-  overflow: hidden
-  border: 1px solid var(--border-color)
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color))
+    color: var(--background-color)
+    border: none
+    padding: 14px 28px
+    border-radius: var(--border-radius)
+    cursor: pointer
+    transition: $transition
+    text-decoration: none
+    display: inline-block
+    margin-top: 2rem
+    font-weight: 600
+    letter-spacing: 0.5px
+    position: relative
+    overflow: hidden
+    border: 1px solid var(--border-color)
 
-  &:hover
-    transform: translateY(-3px)
-    box-shadow: var(--shadow-hover)
+    &:hover
+        transform: translateY(-3px)
+        box-shadow: var(--shadow-hover)
 
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: -100%
-    width: 100%
-    height: 100%
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)
-    transition: left 0.5s
+    &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: -100%
+        width: 100%
+        height: 100%
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)
+        transition: left 0.5s
 
-  &:hover::before
-    left: 100%
+    &:hover::before
+        left: 100%
 
-  &:focus
-    outline: 2px solid var(--primary-color)
-    outline-offset: 2px
+    &:focus
+        outline: 2px solid var(--primary-color)
+        outline-offset: 2px
 
-// Loading
+// Loading States
 .loading
-  display: none
-  text-align: center
-  padding: 4rem
+    display: none
+    text-align: center
+    padding: 4rem
+
+.loading-state
+    text-align: center
+    padding: 3rem
+    
+    .spinner
+        margin: 0 auto 2rem
+    
+    .progress-bar
+        width: 100%
+        height: 4px
+        background: var(--border-color)
+        border-radius: 2px
+        overflow: hidden
+        margin-top: 2rem
+        
+        .progress
+            height: 100%
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color))
+            width: 0%
+            transition: width 0.3s ease
+            animation: loadingProgress 2s ease-in-out infinite
+
+    .loading-text
+        font-size: 0.9rem
+        color: var(--text-secondary)
+        margin-top: 1rem
+
+@keyframes loadingProgress
+    0%
+        width: 0%
+        transform: translateX(-100%)
+    50%
+        width: 60%
+    100%
+        width: 100%
+        transform: translateX(100%)
 
 .spinner
-  border: 3px solid var(--glass-background)
-  border-top: 3px solid var(--primary-color)
-  border-radius: 50%
-  width: 50px
-  height: 50px
-  animation: spin 1s linear infinite
-  margin: 0 auto 2rem
-  box-shadow: var(--glow-soft)
+    border: 3px solid var(--glass-background)
+    border-top: 3px solid var(--primary-color)
+    border-radius: 50%
+    width: 50px
+    height: 50px
+    animation: spin 1s linear infinite
+    margin: 0 auto 2rem
+    box-shadow: var(--glow-soft)
+
+// Error States
+.error-state
+    text-align: center
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52)
+    color: white
+    
+    h3
+        color: white
+        margin-bottom: 1rem
 
 // Footer
 .footer
-  background: var(--background-secondary)
-  color: var(--text-color)
-  text-align: center
-  padding: 4rem 2rem
-  border-top: 1px solid var(--border-color)
-  margin-top: auto
+    background: var(--background-secondary)
+    color: var(--text-color)
+    text-align: center
+    padding: 4rem 2rem
+    border-top: 1px solid var(--border-color)
+    margin-top: auto
 
 // Skills Section
 .skill-category
-  margin-bottom: 2rem
+    margin-bottom: 2rem
 
-  h3
-    color: var(--primary-color)
-    margin-bottom: 1rem
-    font-size: 1.2rem
-    font-weight: 600
+    h3
+        color: var(--primary-color)
+        margin-bottom: 1rem
+        font-size: 1.2rem
+        font-weight: 600
 
 .skill-list
-  display: grid
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
-  gap: 1rem
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+    gap: 1rem
 
 .skill-item
-  background: var(--glass-background)
-  padding: 1rem
-  border-radius: 8px
-  border: 1px solid var(--border-color)
-  transition: $transition
+    background: var(--glass-background)
+    padding: 1rem
+    border-radius: 8px
+    border: 1px solid var(--border-color)
+    transition: $transition
 
-  &:hover
-    border-color: var(--primary-color)
-    box-shadow: var(--glow-soft)
+    &:hover
+        border-color: var(--primary-color)
+        box-shadow: var(--glow-soft)
 
 // Contact Info
 .contact-info
-  display: grid
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
-  gap: 2rem
-  margin-top: 2rem
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
+    gap: 2rem
+    margin-top: 2rem
 
-  @include respond-to(tablet)
-    grid-template-columns: 1fr
+    @include respond-to(tablet)
+        grid-template-columns: 1fr
 
 .contact-item
-  background: var(--glass-background)
-  padding: 2rem
-  border-radius: var(--border-radius)
-  border: 1px solid var(--border-color)
-  text-align: center
-  transition: $transition
+    background: var(--glass-background)
+    padding: 2rem
+    border-radius: var(--border-radius)
+    border: 1px solid var(--border-color)
+    text-align: center
+    transition: $transition
 
-  &:hover
-    border-color: var(--primary-color)
-    box-shadow: var(--glow-soft)
-    transform: translateY(-5px)
+    &:hover
+        border-color: var(--primary-color)
+        box-shadow: var(--glow-soft)
+        transform: translateY(-5px)
 
 .contact-icon
-  font-size: 2rem
-  margin-bottom: 1rem
-  color: var(--primary-color)
+    font-size: 2rem
+    margin-bottom: 1rem
+    color: var(--primary-color)
 
 // =============================================================================
 // UTILIDADES Y ACCESIBILIDAD
@@ -785,27 +849,113 @@ body
 
 // Screen Reader Only
 .sr-only
-  position: absolute
-  width: 1px
-  height: 1px
-  padding: 0
-  margin: -1px
-  overflow: hidden
-  clip: rect(0, 0, 0, 0)
-  white-space: nowrap
-  border: 0
+    position: absolute
+    width: 1px
+    height: 1px
+    padding: 0
+    margin: -1px
+    overflow: hidden
+    clip: rect(0, 0, 0, 0)
+    white-space: nowrap
+    border: 0
+
+// Focus states mejorados
+.nav-item:focus,
+.btn:focus,
+.theme-toggle:focus,
+.lang-selector:focus,
+.mobile-nav-toggle:focus,
+.mobile-nav-item:focus
+    outline: 2px solid var(--primary-color)
+    outline-offset: 2px
 
 // High Contrast Mode Support
 @media (prefers-contrast: high)
-  :root
-    --border-color: var(--primary-color)
-    --text-secondary: var(--text-color)
+    :root
+        --border-color: var(--primary-color)
+        --text-secondary: var(--text-color)
 
 // Reduced Motion Support
 @media (prefers-reduced-motion: reduce)
-  *,
-  *::before,
-  *::after
-    animation-duration: 0.01ms !important
-    animation-iteration-count: 1 !important
-    transition-duration: 0.01ms !important
+    *,
+    *::before,
+    *::after
+        animation-duration: 0.01ms !important
+        animation-iteration-count: 1 !important
+        transition-duration: 0.01ms !important
+
+// Keyboard Navigation
+body.keyboard-navigation *:focus
+    outline: 2px solid var(--primary-color) !important
+    outline-offset: 2px
+
+body:not(.keyboard-navigation) *:focus
+    outline: none
+
+// =============================================================================
+// ESTILOS PARA CARGA CONCURRENTE
+// =============================================================================
+
+// Estados de imagen optimizados para SPA
+.project-image
+    transition: all 0.5s ease
+    background-size: cover
+    background-position: center
+    background-repeat: no-repeat
+
+    // Placeholder pattern para imágenes no cargadas - CORREGIDO
+    &[data-loaded="false"]:not([data-src=""])
+        background-image: linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%), linear-gradient(-45deg, var(--secondary-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--secondary-color) 75%), linear-gradient(-45deg, transparent 75%, var(--secondary-color) 75%)
+        background-size: 20px 20px
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px
+
+// Animación de fade in para imágenes
+@keyframes imageFadeIn
+    from
+        opacity: 0
+        transform: scale(0.95)
+    to
+        opacity: 1
+        transform: scale(1)
+
+.image-fade-in
+    animation: imageFadeIn 0.6s ease-out
+
+// Debug console (solo desarrollo)
+.debug-console
+    position: fixed
+    bottom: 20px
+    right: 20px
+    background: var(--background-card)
+    border: 1px solid var(--border-color)
+    border-radius: var(--border-radius)
+    padding: 1rem
+    font-family: 'JetBrains Mono', monospace
+    font-size: 0.8rem
+    max-width: 300px
+    max-height: 200px
+    overflow-y: auto
+    z-index: 10000
+    display: none
+    
+    &.visible
+        display: block
+    
+    .debug-entry
+        margin-bottom: 0.5rem
+        padding-bottom: 0.5rem
+        border-bottom: 1px solid var(--border-color)
+        
+        &.info
+            color: var(--primary-color)
+        
+        &.warn
+            color: #ffbd2e
+        
+        &.error
+            color: #ff5f56
+
+// Performance optimizations
+.performance-optimized
+    will-change: transform, opacity
+    backface-visibility: hidden

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio Profesional | Cybersecurity Developer</title>
+    <link rel="shortcut icon" href="public/icon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
@@ -264,6 +265,18 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Sección de Testing (Opcional) -->
+            <section id="performance-test" style="display: none;">
+                <div class="card">
+                    <h3>Performance Test</h3>
+                    <div id="test-images" class="grid">
+                        <!-- Imágenes de prueba se cargarán aquí -->
+                    </div>
+                    <button id="run-test" class="btn">Ejecutar Test de Carga</button>
+                    <div id="test-results"></div>
+                </div>
+            </section>
         </main>
 
         <!-- Professional Footer -->
@@ -274,25 +287,146 @@
         </footer>
     </div>
 
-    <!-- Servicios base -->
-    <script src="public/js/professional-I18n-service.js" defer></script>
-    <script src="public/js/professional-loading-service.js" defer></script>
-    <script src="public/js/professional-matrix-service.js" defer></script>
-    <script src="public/js/professional-navigation-service.js" defer></script>
-    <script src="public/js/professional-observer.js" defer></script>
-    <script src="public/js/professional-theme-service.js" defer></script>
-    <script src="public/js/terminal-animation-service.js" defer></script>
+    <!-- 1. Servicios Base -->
+    <script src="public/js/professional-I18n-service.js"></script>
+    <script src="public/js/professional-theme-service.js"></script>
+    <script src="public/js/professional-matrix-service.js"></script>
+    <script src="public/js/professional-loading-service.js"></script>
 
-    <!-- Lógica de proyectos -->
-    <script src="public/js/professional-project-factory.js" defer></script>
-    <script src="public/js/professional-project-service.js" defer></script>
+    <!-- 2. Servicios de Animación -->
+    <script src="public/js/terminal-animation-service.js"></script>
 
-    <!-- Componentes -->
-    <script src="public/js/professional-projects-component.js" defer></script>
+    <!-- 3. Servicios de Navegación -->
+    <script src="public/js/professional-navigation-service.js"></script>
+    <script src="public/js/professional-observer.js"></script>
 
-    <!-- App principal -->
-    <script src="public/js/professional-portfolio-app.js" defer></script>
+    <!-- 4. Servicios de Proyectos -->
+    <script src="public/js/professional-project-service.js"></script>
+    <script src="public/js/professional-project-factory.js"></script>
+    <script src="public/js/professional-projects-component.js"></script>
 
+    <!-- 5. Servicios de Carga Concurrente -->
+    <script src="public/js/concurrent-image-loader.js"></script>
+    <script src="public/js/concurrent-project-loader.js"></script>
+    <script src="public/js/performance-monitor.js"></script>
+
+    <!-- 6. Aplicación Principal (ÚLTIMA) -->
+    <script src="public/js/professional-portfolio-app.js"></script>
+
+    <!-- ============================================================================= -->
+    <!-- SCRIPT DE INICIALIZACIÓN MEJORADO -->
+    <!-- ============================================================================= -->
+    <script>
+        // Función para verificar si una clase existe
+        function checkClassExists(className) {
+            try {
+                // Probar evaluando la clase
+                const result = eval(`typeof ${className} !== 'undefined'`);
+                return result;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Función para inicializar la aplicación
+        function initializePortfolio() {
+            console.log('🚀 Inicializando Portfolio Profesional...');
+
+            const requiredClasses = [
+                'ProfessionalI18nService',
+                'ProfessionalThemeService',
+                'ProfessionalNavigationService',
+                'ProfessionalMatrixService',
+                'TerminalAnimationService',
+                'ProfessionalProjectService',
+                'ProfessionalProjectsComponent',
+                'ProfessionalProjectFactory',
+                'ConcurrentImageLoader',
+                'ConcurrentProjectLoader',
+                'PerformanceMonitor',
+                'ProfessionalObserver',
+                'ProfessionalPortfolioApp'
+            ];
+
+            // Verificar clases de manera más robusta
+            const missingClasses = [];
+            const availableClasses = [];
+
+            requiredClasses.forEach(className => {
+                if (checkClassExists(className)) {
+                    availableClasses.push(className);
+                    console.log(`✅ ${className} cargada`);
+                } else {
+                    missingClasses.push(className);
+                    console.warn(`❌ ${className} no encontrada`);
+                }
+            });
+
+            if (missingClasses.length > 0) {
+                console.warn('⚠️ Clases faltantes:', missingClasses);
+                console.log('✅ Clases disponibles:', availableClasses);
+
+                // Intentar inicializar de todos modos si las clases críticas están disponibles
+                if (availableClasses.includes('ProfessionalPortfolioApp')) {
+                    console.log('🎯 Intentando inicializar con clases disponibles...');
+                    try {
+                        window.portfolioApp = new ProfessionalPortfolioApp();
+                        console.log('✅ Portfolio inicializado con clases disponibles');
+                    } catch (error) {
+                        console.error('❌ Error al inicializar con clases disponibles:', error);
+                        showError('Error de inicialización: ' + error.message);
+                    }
+                } else {
+                    showError('No se pudo inicializar la aplicación. Faltan componentes críticos.');
+                }
+            } else {
+                // Todas las clases están disponibles
+                try {
+                    window.portfolioApp = new ProfessionalPortfolioApp();
+                    console.log('✅ Portfolio Profesional inicializado correctamente');
+                } catch (error) {
+                    console.error('❌ Error al inicializar la aplicación:', error);
+                    showError('Error crítico: ' + error.message);
+                }
+            }
+        }
+
+        // Mostrar error al usuario
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: #ff6b6b;
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            `;
+            errorDiv.innerHTML = `
+                <strong>Error de Carga:</strong> ${message}
+                <br><small>Por favor, recarga la página. Si el problema persiste, verifica la consola.</small>
+            `;
+            document.body.appendChild(errorDiv);
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function () {
+            // Pequeño delay para asegurar que los scripts se carguen
+            setTimeout(initializePortfolio, 100);
+        });
+
+        // Manejar errores de carga de scripts
+        window.addEventListener('error', function (e) {
+            console.error('❌ Error global:', e.error);
+            console.error('Archivo:', e.filename);
+            console.error('Línea:', e.lineno);
+        });
+    </script>
 </body>
 
 </html>

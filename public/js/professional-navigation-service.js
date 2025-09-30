@@ -1,27 +1,46 @@
+/**
+ * Professional Navigation Service
+ */
 class ProfessionalNavigationService {
     constructor() {
         this.currentSection = 'home';
-        this.sections = document.querySelectorAll('.section');
-        this.navItems = document.querySelectorAll('.nav-item');
-        this.mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        this.sections = [];
+        this.navItems = [];
+        this.mobileNavItems = [];
         this.observers = [];
-        this.mobileNav = document.getElementById('mobile-nav');
-        this.mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        this.mobileNav = null;
+        this.mobileNavToggle = null;
         this.isMobileNavOpen = false;
     }
 
+    init() {
+        this.sections = Array.from(document.querySelectorAll('.section'));
+        this.navItems = Array.from(document.querySelectorAll('.nav-item'));
+        this.mobileNavItems = Array.from(document.querySelectorAll('.mobile-nav-item'));
+        this.mobileNav = document.getElementById('mobile-nav');
+        this.mobileNavToggle = document.getElementById('mobile-nav-toggle');
+
+        this.initMobileNav();
+        this.updateNavigation();
+    }
+
     addObserver(observer) {
-        this.observers.push(observer);
+        if (typeof observer === 'object' && observer !== null) {
+            this.observers.push(observer);
+        }
     }
 
     notifyObservers(section) {
         this.observers.forEach(observer => {
-            if (observer.update) observer.update(section);
+            if (observer && typeof observer.update === 'function') {
+                observer.update(section);
+            }
         });
     }
 
     navigateTo(sectionId) {
-        // Smooth transition
+        if (this.currentSection === sectionId) return;
+
         this.sections.forEach(section => {
             section.classList.remove('active');
         });
@@ -32,11 +51,8 @@ class ProfessionalNavigationService {
             this.currentSection = sectionId;
             this.updateNavigation();
             this.notifyObservers(sectionId);
-
-            // Update page title
             this.updatePageTitle(sectionId);
 
-            // Close mobile nav if open
             if (this.isMobileNavOpen) {
                 this.toggleMobileNav();
             }
@@ -73,17 +89,19 @@ class ProfessionalNavigationService {
 
     toggleMobileNav() {
         this.isMobileNavOpen = !this.isMobileNavOpen;
-
-        if (this.isMobileNavOpen) {
-            this.mobileNav.classList.add('active');
-            this.mobileNavToggle.classList.add('active');
-            this.mobileNavToggle.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
-        } else {
-            this.mobileNav.classList.remove('active');
-            this.mobileNavToggle.classList.remove('active');
-            this.mobileNavToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+        
+        if (this.mobileNav && this.mobileNavToggle) {
+            if (this.isMobileNavOpen) {
+                this.mobileNav.classList.add('active');
+                this.mobileNavToggle.classList.add('active');
+                this.mobileNavToggle.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            } else {
+                this.mobileNav.classList.remove('active');
+                this.mobileNavToggle.classList.remove('active');
+                this.mobileNavToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
         }
     }
 
@@ -93,7 +111,6 @@ class ProfessionalNavigationService {
                 this.toggleMobileNav();
             });
 
-            // Close mobile nav when clicking on a link
             this.mobileNavItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -104,5 +121,15 @@ class ProfessionalNavigationService {
                 });
             });
         }
+
+        document.addEventListener('click', (e) => {
+            if (this.isMobileNavOpen && 
+                this.mobileNav && 
+                !this.mobileNav.contains(e.target) && 
+                this.mobileNavToggle && 
+                !this.mobileNavToggle.contains(e.target)) {
+                this.toggleMobileNav();
+            }
+        });
     }
 }
